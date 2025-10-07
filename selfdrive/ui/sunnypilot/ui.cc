@@ -29,7 +29,7 @@ UIStateSP::UIStateSP(QObject *parent) : UIState(parent) {
     "wideRoadCameraState", "managerState", "selfdriveState", "longitudinalPlan",
     "modelManagerSP", "selfdriveStateSP", "longitudinalPlanSP", "backupManagerSP",
     "carControl", "gpsLocationExternal", "gpsLocation", "liveTorqueParameters",
-    "carStateSP", "liveParameters", "liveMapDataSP"
+    "carStateSP", "liveParameters", "liveMapDataSP", "liveTracks"
   });
 
   // update timer
@@ -44,6 +44,14 @@ UIStateSP::UIStateSP(QObject *parent) : UIState(parent) {
   });
   param_watcher->addParam("DevUIInfo");
   param_watcher->addParam("StandstillTimer");
+  param_watcher->addParam("VisualStyle");
+  param_watcher->addParam("VisualStyleBlend");
+  param_watcher->addParam("VisualStyleOverheadBlend");
+  param_watcher->addParam("VisualStyleBlendThreshold");
+  param_watcher->addParam("VisualRadarTracks");
+  param_watcher->addParam("VisualRadarTracksDelay");
+  param_watcher->addParam("VisualWideCam");
+  param_watcher->addParam("VisualFPS");
 }
 
 // This method overrides completely the update method from the parent class intentionally.
@@ -64,6 +72,14 @@ void ui_update_params_sp(UIStateSP *s) {
   s->scene.standstill_timer = params.getBool("StandstillTimer");
   s->scene.speed_limit_mode = std::atoi(params.get("SpeedLimitMode").c_str());
   s->scene.road_name = params.getBool("RoadNameToggle");
+  s->scene.visual_style = QString::fromStdString(params.get("VisualStyle")).toInt();
+  s->scene.visual_style_blend = QString::fromStdString(params.get("VisualStyleBlend")).toInt();
+  s->scene.visual_style_overhead_blend = QString::fromStdString(params.get("VisualStyleOverheadBlend")).toInt();
+  s->scene.visual_style_blend_threshold = QString::fromStdString(params.get("VisualStyleBlendThreshold")).toInt();
+  s->scene.visual_radar_tracks = QString::fromStdString(params.get("VisualRadarTracks")).toInt();
+  s->scene.visual_radar_tracks_delay = QString::fromStdString(params.get("VisualRadarTracksDelay")).toFloat();
+  s->scene.visual_wide_cam = QString::fromStdString(params.get("VisualWideCam")).toInt();
+  s->scene.visual_fps = QString::fromStdString(params.get("VisualFPS")).toInt();
 
   // Onroad Screen Brightness
   s->scene.onroadScreenOffBrightness = std::atoi(params.get("OnroadScreenOffBrightness").c_str());
